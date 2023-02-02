@@ -1,0 +1,132 @@
+% ------------------------------------------------------------
+% LaTeX Template für die DHBW zum Schnellstart!
+% Original: https://github.wdf.sap.corp/vtgermany/LaTeX-Template-DHBW
+% ------------------------------------------------------------
+% ---- Präambel mit Angaben zum Dokument
+\input{Inhalt/00_Latex/praeambel}
+
+% ---- Elektronische Version oder Gedruckte Version?
+% ---- Unterschied: Die elektronische Version enthält keinen Platzhalter für die Unterschrift
+\usepackage{ifthen}
+\newboolean{e-Abgabe}
+\setboolean{e-Abgabe}{true}    % false=gedruckte Fassung
+
+% ---- Persönlichen Daten:
+\newcommand{\titel}{High-Level Vergleich von Big Data Dateiformaten}
+\newcommand{\titelheader}{Integrationsseminar}
+\newcommand{\arbeit}{Seminararbeit}
+\newcommand{\studiengang}{Wirtschaftsinformatik: Software Engineering}
+\newcommand{\studienjahr}{2022}
+\newcommand{\autor}{Mathis Neunzig}
+\newcommand{\autorReverse}{Neunzig, Mathis}
+\newcommand{\verfassungsort}{Mannheim}
+\newcommand{\matrikelnr}{2240587}
+\newcommand{\kurs}{WI 2020 MA SE B}
+\newcommand{\bearbeitungsmonat}{Dezember 2022 - Februar 2023}
+\newcommand{\abgabe}{03. Februar 2023}
+\newcommand{\bearbeitungszeitraum}{22.12.2022 - 03.02.2023}
+\newcommand{\dozent}{Alexander Lütke}
+\newcommand{\firmaName}{SAP SE}
+\newcommand{\firmaStrasse}{Dietmar-Hopp-Allee 16}
+\newcommand{\firmaPlz}{69190 Walldorf, Deutschland}
+\newcommand{\betreuerFirma}{Joscha-Philipp Bohn}
+\newcommand{\betreuerDhbw}{Prof. Dr. Thomas Holey}
+
+% ---- Adressen:
+\newcommand{\sapdeName}{SAP Deutschland SE und Co. KG}
+\newcommand{\sapdeStrasse}{Hasso-Plattner-Ring 7}
+\newcommand{\sapdePLZ}{69190 Walldorf, Deutschland}
+\newcommand{\aribaName}{Ariba Inc. (SAP Ariba)}
+\newcommand{\aribaStrasse}{3420 Hillview Ave}
+\newcommand{\aribaPLZ}{CA 94304 Palo Alto, USA}
+\newcommand{\concurName}{Concur Technologies Inc., Concur Holdings (Netherlands) B.V. (SAP Concur)}
+\newcommand{\concurStrasse}{601 108th Ave NE}
+\newcommand{\concurPLZ}{WA 98004 Bellevue, USA}
+\newcommand{\fgName}{SAP America Inc., SAP Fieldglass, SAP SuccessFactors}
+\newcommand{\fgStrasse}{3999 West Chester Pike}
+\newcommand{\fgPLZ}{PA 19073 Newtown Square, USA}
+\newcommand{\hybrisName}{hybris AG (SAP Hybris)}
+\newcommand{\hybrisStrasse}{Birkenstrasse 49}
+\newcommand{\hybrisPLZ}{6343 Rotkreuz, Schweiz}
+\newcommand{\gName}{Gartner Inc.}
+\newcommand{\gStrasse}{56 Top Gallant Road}
+\newcommand{\gPLZ}{Stamford, CT 06902 USA}
+
+\input{Inhalt/00_Latex/kopfundFusszeile}
+
+% ---- Hilfreiches
+\newcommand{\zB}{z.\,B. }   % "z.B." mit kleinem Leeraum dazwischen (ohne wäre nicht korrekt)
+\newcommand{\dash}{d.\,h. }
+
+\newcommand{\code}[1]{\texttt{#1}} % Ist einfacher zu schreiben als ständig \texttt und erlaubt
+                                   % Änderungen im Nachhinein, wenn man z.B. Inline-Code anders stylen möchte.
+
+% ---- Silbentrennung (falls LaTeX defaults falsch / nicht gewünscht sind)
+\hyphenation{HANA}         % anstatt HA-NA
+\hyphenation{Graph-Script} % anstatt GraphS-cript
+
+% ---- Beginn des Dokuments
+\begin{document}
+\setlength{\parindent}{0pt}              % Keine Paragraphen Einrückung.
+                                         % Dafür haben wir den Abstand zwischen den Paragraphen.
+\setcounter{secnumdepth}{2}              % Nummerierungstiefe fürs Inhaltsverzeichnis
+\setcounter{tocdepth}{2}                 % Tiefe des Inhaltsverzeichnisses. Ggf. so anpassen,
+                                         % dass das Verzeichnis auf eine Seite passt.
+\sffamily                                % Serifenlose Schrift verwenden.
+
+% ---- Vorspann
+% ------ Titelseite
+\singlespacing
+\include{Inhalt/01_Standard/titelseite}  % Titelseite
+\newcounter{savepage}
+\pagenumbering{Roman}                    % Römische Seitenzahlen
+\onehalfspacing
+
+% ------ Erklärung, Sperrvermerk, Abstact, Vorwort
+\include{Inhalt/01_Standard/erklaerung}
+\include{Inhalt/02_Abstract/abstract}
+\include{Inhalt/01_Standard/vorwort}
+
+% ------ Inhaltsverzeichnis
+\singlespacing
+\tableofcontents
+
+% ------ Verzeichnisse
+\renewcommand*{\chapterpagestyle}{plain}
+\pagestyle{plain}
+\include{Inhalt/03_Verzeichnisse/abkuerzungen}
+\listoffigures                          % Erzeugen des Abbildungsverzeichnisses 
+\renewcommand{\lstlistlistingname}{Quellcodeverzeichnis}
+\lstlistoflistings                      % Erzeugen des Listenverzeichnisses
+\setcounter{savepage}{\value{page}}
+
+
+% ---- Inhalt der Arbeit
+\cleardoublepage
+\pagenumbering{arabic}                  % Arabische Seitenzahlen für den Hauptteil
+\setlength{\parskip}{0.5\baselineskip}  % Abstand zwischen Absätzen
+\rmfamily
+\renewcommand*{\chapterpagestyle}{scrheadings}
+\pagestyle{scrheadings}
+\onehalfspacing
+\include{Inhalt/04_Inhalt/041_Einleitung}
+\include{Inhalt/04_Inhalt/042_Grundbegriffe}
+\include{Inhalt/04_Inhalt/043_Vergleich}
+\include{Inhalt/04_Inhalt/045_Zusammenfassung.tex}
+
+% ---- Literaturverzeichnis
+\cleardoublepage
+\renewcommand*{\chapterpagestyle}{plain}
+\pagestyle{plain}
+\pagenumbering{Roman}                   % Römische Seitenzahlen
+\setcounter{page}{\numexpr\value{savepage}+1}
+\printbibliography[title=Literaturverzeichnis]
+
+% ---- Anhang
+\appendix
+\include{Inhalt/05_Anhang/anhang}
+%\clearpage
+%\pagenumbering{Roman}  % römische Seitenzahlen für Anhang
+
+\newpage
+\end{document}

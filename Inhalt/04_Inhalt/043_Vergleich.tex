@@ -1,0 +1,40 @@
+\chapter{Vergleiche}
+
+In der Wissenschaft gibt es keine Einigkeit, welche Dateiformate als ''Big-Data-Dateiformate'' eingestuft werden können. Es gibt Literatur, die eine Vielzahl von Dateiformaten in den Bereich einordnet und diese miteinander vergleicht \cite{gohil_compendious_2022} \cite{belov_experimental_2021} \cite{belov_analysis_2021}, jedoch gibt es auch solche Literatur, die nur Parquet, Avro und ORC als ''Big-Data-Dateiformate'' ansehen \cite{plase_comparison_2017}. Da Parquet, Avro und ORC auf den ersten Blick schnellere und kleinere Dateiformate sind \cite[S. 907ff.]{gohil_compendious_2022} \cite[S. 7]{belov_experimental_2021}, die sich somit mehr für ''Big Data'' eignen, werden nur diese drei Dateiformate in den folgenden Vergleichen herangezogen. Die übrigen Dateiformate JSON, CSV und XML werden nur sporadisch an kritischen Stellen erwähnt, wo dies nötig ist.
+
+Nachdem die zu vergleichenden Dateiformate feststehen, können diese im Folgenden gegenübergestellt werden. In der Literatur werden oft die Metriken Speicherplatz, Geschwindigkeit und die Komprimierung von Dateiformaten untersucht. Deshalb werden diese Metriken neben anderen, seltener in der Literatur auftauchenden Metriken, im Folgenden untersucht. Für die Analyse werden Beispieldaten genutzt, welche aus einer Millionen Zeilen bestehen\footnote{Aufbau der Beispieldaten in \ref{fig:Daten}}.
+
+Die untersuchten Dateiformate sind primär Parquet, Avro und ORC. Zusätzlich werden ein paar Vergleiche mit herkömmlichen Dateiformaten wie JSON, CSV und XML hergestellt.
+
+\section{Speicherplatz}
+Im Vergleich zu von Menschen lesbaren Dateiformaten wie JSON oder XML, werden Parquet, Avro und ORC codiert und sind nicht von Menschen lesbar \cite[S. 905f.]{gohil_compendious_2022}. Aus diesem Grund entfällt einiges an Overhead, wie zum Beispiel die Tags in XML oder die sich wiederholenden Attributbezeichnungen in JSON, welche den Speicherplatz sehr erhöhen. Aus diesem Grund sind Parquet-, Avro- und ORC-Dateien generell klein, jedoch ist Avro im Vergleich zu Parquet und ORC um einiges Größer und kann sogar mit dem zu den nicht-Big-Data-Dateiformaten gehörenden CSV verglichen werden\footnote{Siehe Abbildung \ref{fig:Speicherplatz}} \cite[S. 907]{gohil_compendious_2022} \cite[S. 7]{belov_experimental_2021}. Zu beachten ist, dass in Avro-Dateien das Schema im Klartext als JSON-Object mitgespeichert ist \cite[S. 338]{munir_cost-based_2020}.
+
+\section{Geschwindigkeit}
+Bei verschiedenen Lese-Zugriffen auf den Datensatz mit verschiedenen Funktionen stellt sich heraus, dass Avro um ein Vielfaches langsamer ist als ORC und Parquet \cite[S. 908ff.]{gohil_compendious_2022}. Dabei ist es egal, ob zufällige Daten gewählt werden\footnote{Siehe Abbildung \ref{fig:Zufall}}, Aggregationen ausgeführt werden\footnote{Siehe Abbildung \ref{fig:Aggregation}} oder mathematische Funktionen mit numerischen Spalten durchgeführt werden\footnote{Siehe Abbildung \ref{fig:Summierungen}}.
+Da Avro eine zeilenweise Speicherung besitzt, können Daten schnell geschrieben werden. Das Lesen ist dentsprechend langsamer als die spaltenorientierten Formate Parquet und ORC, die widerum beim Schreiben in Dateien langsamer sind \cite[S. 1665]{abadi_column-oriented_nodate}. Bei allen Anfragen waren JSON, CSV und XML langsamer und nicht mit Parquet, Avro und ORC vergleichbar \cite[S. 906ff.]{gohil_compendious_2022}.
+
+\section{Komprimierung}
+Parquet, Avro als auch ORC unterstützen verschiedene Arten von Komprimierung \cite[S. 268]{plase_comparison_2017}, welches herkömmliche Dateiformate meist nicht anbieten \cite[S. 553]{belov_analysis_2021}. Parquet und ORC unterstützen beide eine Vielzahl von gleichen Komprimierungsarten, wie Snappy, LZ4 oder ZSTD. Avro unterstützt eine andere Menge an Komprimierungen, wie Deflate, BZIP2, XZ aber auch Snappy und ZSTD, wie Parquet und ORC auch. Die Komprimierung ist bei Parquet und ORC besser als bei Avro, da Avro generell ein größeres Dateiformat ist \cite[S. 907]{gohil_compendious_2022}. Zwischen Parquet und ORC herrschen nur kleine Unterschiede in unterstützten Komprimierungsformaten\footnote{Siehe Abbildung \ref{fig:Komprimierung}}. JSON, CSV und XML unterstützen nativ keine Komprimierung \cite[S. 268]{plase_comparison_2017}.
+
+\section{Programmierung}
+Für die Benutzung von Parquet, Avro und ORC gibt es Bibliotheken, die genutzt werden können, um mit den Dateiformaten zu arbeiten \cite{javadoc_parquetreader_nodate} \cite{apache_datafilereader_nodate} \cite{orc_using_nodate}. Die Bibliotheken sind auf die bestimmten Dateiformate abgestimmt und werden von unterschiedlichen Webseiten bereitgestellt. Codebeispiele zum Einlesen von Parquet-, Avro- und ORC-Dateien befinden sich im Anhang unter Abschnitt C. Die Programmierung mit CSV, JSON und XML Dateien ist bei diesem Vergleich sogar einfacher, da es in vielen Programmiersprachen nativ die Möglichkeit gibt, CSV-, JSON- und XML-Dateien einzulesen. 
+
+\section{Schema}
+Parquet und Avro, aber auch JSON und XML arbeiten mit einem Schema \cite[S. 268]{plase_comparison_2017}, welches bei Parquet im Footer und bei Avro in JSON-Notation im Header gespeichert ist \cite[S. 337ff.]{munir_cost-based_2020}. Das bedeutet, dass Parquet und Avro beide auch Schema-Evolution unterstützen \cite[S. 553]{belov_analysis_2021}, welches meint, dass im Nachhinein die Struktur der Daten verändert werden kann \cite[S. 1ff.]{delplanque_relational_2018}.
+
+\section{Empfohlene Tools}
+Die verschiedenen Dateiformate sind auf verschiedene Tools angepasst und funktionieren am besten mit denen. Parquet ist für die Arbeit mit Spark und Impala, aber auch Hadoop optimiert. Während Avro für die Kompatibilität vor allem mit Apache Kafka bekannt ist, ist ORC das Dateiformat für die Arbeit mit Hive \cite[S. 907]{gohil_compendious_2022}. CSV, JSON und XML sind nicht für bestimmte Programme optimiert.
+
+\section{Sonstige Vergleiche}
+Zusätzlich zu den Unterschieden in den vergangenen Kapiteln sind die Dateiformaten in einigen, eher unbedeutenderen Metriken unterschiedlich oder ähnlich. Avro unterstützt zum einen die Arbeit mit Null-Werten \cite{apache_avro_nodate}, was Parquet und ORC nicht unterstützen. Das selbe gilt für die Unterstützung von Unions \cite{apache_avro_nodate}. Eine Skalierung unterstützen wiederum alle drei Dateiformate, da diese durch ihren Aufbau wachsen werden können, ohne große Speicherplatzprobleme oder Probleme mit der Struktur der Datei zu bereiten \cite[S. 337ff.]{munir_cost-based_2020}. 
+
+\chapter{Ergebnis}
+Abschließend können die Vergleiche zusammengezogen werden und die verschiedenen Aspekte direkt gegenübergestellt werden:
+
+Die Vorteile von Parquet sind, dass Lese-Operationen schnell sind, es eine sehr gute Komprimierung gibt, wenig Speicherplatz verbraucht wird und es ein eingebautes Schema gibt. Parquet ist nicht für schreib-lastige Operationen geeignet und nicht von Menschen lesbar. 
+
+Avro hat als Vorteile, dass es gut für schreib-lastige Operationen ist und sich somit konkurrenzlos in der Kategorie heraushebt. Avro unterstützt die Arbeit mit einem Schema, ist jedoch wie Parquet nicht von Menschen lesbar und verbraucht mehr Speicherplatz als Parquet und ORC, auch nach Komprimierung.
+
+Wie Parquet ist auch ORC gut für Lese-Operationen, verbraucht wenig Speicherplatz und kann mit vielen Komprimierungsarten arbeiten. Es gibt jedoch kein Schema, mit dem gearbeitet werden kann. Auch ORC ist nicht von Menschen lesbar und nicht für schreib-lastige Operationen geeignet.
+
+CSV, JSON und XML bieten im Themenbereich Big Data keine Vorteile gegenüber Parquet, Avro und ORC mit der Ausnahme, dass es in der Programmierung einfacher ist, sie zu lesen oder in sie zu schreiben. CSV, JSON und XML sind nicht für Big-Data Vorhaben geeignet.
